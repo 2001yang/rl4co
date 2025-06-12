@@ -11,7 +11,7 @@ from rl4co.utils.ops import gather_by_index, unbatchify
 from rl4co.data.transforms import StateAugmentation
 
 
-def get_action_mask(td, pip_step=1, round_error_epsilon=1e-5):
+def get_pip_mask(td, pip_step=1, round_error_epsilon=1e-5):
     if pip_step == 0:
         load_on_arrival = td["current_load"].unsqueeze(-1) + td["demand"]
         meets_draft_limit = load_on_arrival <= (td["draft_limit"] + round_error_epsilon)
@@ -64,7 +64,7 @@ class TSPDLEnv(RL4COEnvBase):
 
     def get_action_mask(self, td):
         unvisited = ~td["visited"]
-        can_visit = get_action_mask(td, pip_step=self.pip_step, round_error_epsilon=self.round_error_epsilon)  # [B, n]
+        can_visit = get_pip_mask(td, pip_step=self.pip_step, round_error_epsilon=self.round_error_epsilon)  # [B, n]
         action_mask = torch.where(can_visit.any(-1, keepdim=True), can_visit, unvisited)
         return action_mask
 
