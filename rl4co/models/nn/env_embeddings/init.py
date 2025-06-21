@@ -19,6 +19,8 @@ def env_init_embedding(env_name: str, config: dict) -> nn.Module:
     embedding_registry = {
         "tsp": TSPInitEmbedding,
         "atsp": TSPInitEmbedding,
+        "tsptw": TSPTWInitEmbedding,
+        "tspdl": TSPDLInitEmbedding,
         "matnet": MatNetInitEmbedding,
         "cvrp": VRPInitEmbedding,
         "cvrptw": VRPTWInitEmbedding,
@@ -155,6 +157,36 @@ class VRPTWInitEmbedding(VRPInitEmbedding):
             )
         )
         return torch.cat((depot_embedding, node_embeddings), -2)
+
+
+class TSPTWInitEmbedding(nn.Module):
+    def __init__(self, embed_dim, linear_bias=True):
+        super(TSPTWInitEmbedding, self).__init__()
+        node_dim = 5  # node_dim = 5: x, y, tw start, tw end, service_time
+        self.init_embed = nn.Linear(node_dim, embed_dim, linear_bias)
+
+    def forward(self, td):
+        # embeddings
+        return self.init_embed(
+            torch.cat(
+                (td["locs"], td["time_windows"], td["service_time"][..., None]), -1
+            )
+        )
+
+
+class TSPDLInitEmbedding(nn.Module):
+    def __init__(self, embed_dim, linear_bias=True):
+        super(TSPDLInitEmbedding, self).__init__()
+        node_dim = 4  # node_dim = 4: x, y, demand, draft_limit
+        self.init_embed = nn.Linear(node_dim, embed_dim, linear_bias)
+
+    def forward(self, td):
+        # embeddings
+        return self.init_embed(
+            torch.cat(
+                (td["locs"], td["demand"][..., None], td["draft_limit"][..., None]), -1
+            )
+        )
 
 
 class VRPPolarInitEmbedding(nn.Module):

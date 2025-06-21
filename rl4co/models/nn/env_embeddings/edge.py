@@ -28,6 +28,8 @@ def env_edge_embedding(env_name: str, config: dict) -> nn.Module:
     embedding_registry = {
         "tsp": TSPEdgeEmbedding,
         "atsp": ATSPEdgeEmbedding,
+        "tsptw": TSPEdgeEmbedding,
+        "tspdl": TSPEdgeEmbedding,
         "cvrp": CVRPEdgeEmbedding,
         "cvrpmvc": CVRPEdgeEmbedding,
         "sdvrp": TSPEdgeEmbedding,

@@ -27,6 +27,8 @@ from rl4co.envs.routing import (
     SVRPEnv,
     TSPEnv,
     TSPkoptEnv,
+    TSPTWEnv,
+    TSPDLEnv
 )
 
 # Scheduling
@@ -53,6 +55,8 @@ ENV_REGISTRY = {
     "svrp": SVRPEnv,
     "spctsp": SPCTSPEnv,
     "tsp": TSPEnv,
+    "tsptw": TSPTWEnv,
+    "tspdl": TSPDLEnv,
     "smtwtp": SMTWTPEnv,
     "mdcpdp": MDCPDPEnv,
     "mtvrp": MTVRPEnv,

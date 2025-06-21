@@ -18,6 +18,8 @@ def env_dynamic_embedding(env_name: str, config: dict) -> nn.Module:
     """
     embedding_registry = {
         "tsp": StaticEmbedding,
+        "tsptw": StaticEmbedding,
+        "tspdl": StaticEmbedding,
         "atsp": StaticEmbedding,
         "cvrp": StaticEmbedding,
         "cvrptw": StaticEmbedding,

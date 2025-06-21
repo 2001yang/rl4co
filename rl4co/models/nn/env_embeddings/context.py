@@ -18,6 +18,8 @@ def env_context_embedding(env_name: str, config: dict) -> nn.Module:
     embedding_registry = {
         "tsp": TSPContext,
         "atsp": TSPContext,
+        "tsptw": TSPTWContext,
+        "tspdl": TSPDLContext,
         "cvrp": VRPContext,
         "cvrptw": VRPTWContext,
         "cvrpmvc": VRPContext,
@@ -155,6 +157,40 @@ class VRPContext(EnvContext):
     def _state_embedding(self, embeddings, td):
         state_embedding = td["vehicle_capacity"] - td["used_capacity"]
         return state_embedding
+
+
+class TSPTWContext(EnvContext):
+    """Context embedding for the Traveling Salesman Problem with Time Window constraint (TSPTW).
+    Project the following to the embedding space:
+        - current node embedding
+        - current time
+    """
+
+    def __init__(self, embed_dim):
+        super(TSPTWContext, self).__init__(
+            embed_dim=embed_dim, step_context_dim=embed_dim + 1
+        )
+
+    def _state_embedding(self, embeddings, td):
+        current_time = td["current_time"]
+        return current_time
+
+
+class TSPDLContext(EnvContext):
+    """Context embedding for the Traveling Salesman Problem with Draft Limit constraint (TSPDL).
+    Project the following to the embedding space:
+        - current node embedding
+        - current load
+    """
+
+    def __init__(self, embed_dim):
+        super(TSPDLContext, self).__init__(
+            embed_dim=embed_dim, step_context_dim=embed_dim + 1
+        )
+
+    def _state_embedding(self, embeddings, td):
+        current_time = td["current_time"]
+        return current_time
 
 
 class VRPTWContext(VRPContext):
