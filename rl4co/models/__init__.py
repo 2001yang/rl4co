@@ -47,5 +47,6 @@ from rl4co.models.zoo.nargnn import NARGNNPolicy
 from rl4co.models.zoo.neuopt import NeuOpt, NeuOptPolicy
 from rl4co.models.zoo.polynet import PolyNet
 from rl4co.models.zoo.pomo import POMO
+from rl4co.models.zoo.pip import PIP
 from rl4co.models.zoo.ptrnet import PointerNetwork, PointerNetworkPolicy
 from rl4co.models.zoo.symnco import SymNCO, SymNCOPolicy

@@ -3,12 +3,12 @@ from lightning.pytorch.loggers import WandbLogger
 import torch
 from rl4co.envs import TSPTWEnv
 from rl4co.models.zoo.am import AttentionModelPolicy
-from rl4co.models.zoo.pomo import POMO
+from rl4co.models.zoo.pip import PIP
 from rl4co.utils.trainer import RL4COTrainer
 
 def main():
     # Set device
-    device_id = 3
+    device_id = 1
 
     # RL4CO env based on TorchRL
     env = TSPTWEnv(generator_params={'num_loc': 50, 'hardness': "hard", "pip_step": 1}) # pip_step: -1 (no mask), 0 (mask), 1 (pip mask in Bi, et al.,2024)
@@ -20,16 +20,17 @@ def main():
                                   num_encoder_layers=6,
                                   num_heads=8,
                                   normalization="instance",
-                                  use_graph_context=False
+                                  use_graph_context=False,
                                   )
 
     # RL Model (POMO)
-    model = POMO(env,
+    model = PIP(env,
                  policy,
                  batch_size=128,
                  train_data_size=10000*2,
                  val_data_size=1000,
                  optimizer_kwargs={"lr": 1e-4, "weight_decay": 1e-6},
+                 num_samples=50,
                  )
 
     # Example callbacks

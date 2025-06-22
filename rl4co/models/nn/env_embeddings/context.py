@@ -172,7 +172,7 @@ class TSPTWContext(EnvContext):
         )
 
     def _state_embedding(self, embeddings, td):
-        current_time = td["current_time"]
+        current_time = td["current_time"].unsqueeze(-1)
         return current_time
 
 
