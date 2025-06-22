@@ -10,7 +10,7 @@ from rl4co.envs.common.utils import Generator, get_sampler
 class TSPTWGenerator(Generator):
     def __init__(
         self,
-        num_loc: int = 20,
+        num_loc: int = 50,
         min_loc: float = 0.0,
         max_loc: float = 100.0,
         max_time: float = 100.0,
@@ -47,9 +47,9 @@ class TSPTWGenerator(Generator):
             distance = torch.norm(difference, dim=-1)  
             arrival_time = torch.cumsum(distance, dim=-1)
 
-            tw_start_solution = torch.clamp(arrival_time - torch.rand((*batch_size, self.num_loc)) * self.max_time / 2, min=0)
+            tw_start_solution = torch.clamp(arrival_time - torch.rand((*batch_size, self.num_loc - 1)) * self.max_time / 2, min=0)
             tw_start_solution = torch.cat([torch.zeros((*batch_size, 1), dtype=torch.long), tw_start_solution], dim=-1)
-            tw_end_solution = arrival_time + torch.rand((*batch_size, self.num_loc)) * self.max_time / 2
+            tw_end_solution = arrival_time + torch.rand((*batch_size, self.num_loc - 1)) * self.max_time / 2
             depot_tw_end = torch.full((*batch_size, 1), 1000. * self.max_time)
             tw_end_solution = torch.cat([depot_tw_end, tw_end_solution], dim=-1)
 
